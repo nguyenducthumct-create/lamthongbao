@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
-<title>Tạo thông báo họp chi bộ</title>
+<title>TẠO THÔNG BÁO</title>
 <style>
 :root{--bg:#f6f1e7;--card:#fff;--tx:#2b2118;--bd:#e2d6bf;--red:#b30000;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1814;--card:#2a231d;--tx:#f1e8da;--bd:#4a3d31}}
@@ -24,9 +24,9 @@ select{width:100%;padding:8px;border:1px solid var(--bd);border-radius:8px;font:
 .up{display:inline-block;padding:8px 12px;border:1px dashed var(--red);border-radius:8px;font-size:13px;cursor:pointer;margin:0}
 details{margin-top:12px;border:1px solid var(--bd);border-radius:8px;padding:8px 10px}
 summary{cursor:pointer;font-weight:bold;font-size:14px}
-.ad{display:grid;grid-template-columns:92px 1fr 1fr 1fr;gap:6px;align-items:center;font-size:12px;margin-top:8px}
+.ad{display:grid;grid-template-columns:repeat(3,1fr);gap:4px 10px;align-items:center;font-size:12px;margin-top:12px}
 .ad input{padding:0;width:100%}
-.ad small{grid-column:2/5;display:grid;grid-template-columns:1fr 1fr 1fr;color:#8a6d1f;font-size:11px;margin-top:-4px}
+.ad b{grid-column:1/4;font-size:13px}.ad small{grid-column:1/4;display:grid;grid-template-columns:repeat(3,1fr);color:#8a6d1f;font-size:11px}
 .tt{left:80px;width:864px;top:240px;height:150px;color:#b30000;font-weight:800;font-size:120px;text-transform:uppercase;display:none}
 .btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 button{padding:10px 14px;border:0;border-radius:8px;background:var(--red);color:#fff;font:inherit;font-weight:bold;cursor:pointer}
@@ -43,18 +43,37 @@ button.alt{background:#8a6d1f}
 .time em{font-style:normal;color:#b30000}
 .place{left:215px;width:735px;top:732px;height:92px;font-weight:bold;font-size:40px;white-space:normal!important}
 .nd{left:100px;width:840px;top:928px;height:332px}
-.nd ol{list-style:none;margin:0;padding:0;height:100%;display:flex;flex-direction:column;text-align:left;counter-reset:n}
+.nd ol{width:100%;list-style:none;margin:0;padding:0;height:100%;display:flex;flex-direction:column;text-align:left;counter-reset:n}
 .nd li{counter-increment:n;flex:1;display:flex;align-items:center;gap:26px;font-weight:bold;white-space:nowrap;overflow:hidden;border-bottom:2px solid #eab560}
 .nd li:last-child{border:0}
 .nd li span{display:block;white-space:nowrap}
-.nd li:before{content:counter(n);flex:none;width:62px;height:62px;border-radius:50%;background:radial-gradient(#d41414,#8a0000);color:#fff;text-align:center;line-height:62px;font-size:38px;border:3px solid #e5b73b}
+.nd li:before{content:counter(n);box-sizing:border-box;flex:none;width:var(--c,62px);height:var(--c,62px);border-radius:50%;background:radial-gradient(#d41414,#8a0000);color:#fff;text-align:center;line-height:calc(var(--c,62px) - 6px);font-size:calc(var(--c,62px)*.6);border:3px solid #e5b73b}
 .call{left:235px;width:560px;top:1284px;height:94px;color:#c00;font-style:italic;font-weight:bold;font-size:34px;white-space:normal!important;line-height:1.25;text-wrap:balance}
+input,textarea,select{font-size:16px}
+button{min-height:44px}
+.ad input[type=range]{height:28px}
+.bar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:50;gap:8px;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--bd)}
+.bar button{flex:1;min-height:48px;font-size:15px;background:#8a6d1f}
+.bar button.on{background:var(--red)}
+@media (max-width:799px){
+ .wrap{padding:10px 10px 90px;gap:12px}
+ .form,.prev{flex:1 1 100%}
+ .bar{display:flex}
+ body.tab-prev .form{display:none}
+ body:not(.tab-prev) .prev{display:none}
+ .scale{max-width:none}
+ .form h1{font-size:18px}
+ .btns button{flex:1 1 40%}
+}
+@media print{.bar{display:none!important}.prev{display:flex!important}}
+.prev{min-width:0}
+.scale{min-width:0;overflow:hidden}
 </style>
 </head>
 <body>
 <div class="wrap">
  <div class="form">
-  <h1>Tạo thông báo họp chi bộ</h1>
+  <h1>TẠO THÔNG BÁO</h1>
   <label>Kiểu chữ</label><select id="font"></select>
   <label>Phông nền</label><div class="opt" id="bgs"></div>
   <label class="up">⬆ Tải nền của bạn lên<input type="file" id="bgfile" accept="image/*" hidden></label>
@@ -97,6 +116,7 @@ Cập nhật sổ tay đảng viên 100%</textarea>
   </div>
  </div></div>
 </div>
+<div class="bar"><button id="tIn" type="button" class="on">✏ Nhập</button><button id="tPv" type="button">👁 Xem</button><button id="tDl" type="button" style="background:#b30000">⬇ Tải ảnh</button></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
 var $=function(i){return document.getElementById(i)};
@@ -105,21 +125,29 @@ var BLK=[['tt','Tiêu đề lớn','p_tt'],['dang','Đảng bộ','p_dang'],['ch
 var cfg={};BLK.forEach(function(b){cfg[b[0]]={s:100,x:0,y:0}});
 var custom=false;
 function SC(k){return cfg[k].s/100}
-function fitEl(el,sc){el.style.fontSize='';var fs=parseFloat(getComputedStyle(el).fontSize)*(sc||1);el.style.fontSize=fs+'px';
-  if($('auto').checked){while((el.scrollWidth>el.clientWidth+1||el.scrollHeight>el.clientHeight+1)&&fs>10){fs-=1;el.style.fontSize=fs+'px'}}}
+function over(el){return el.scrollWidth>el.clientWidth+1||el.scrollHeight>el.clientHeight+1}
+function fitEl(el,sc){el.style.fontSize='';var base=parseFloat(getComputedStyle(el).fontSize)*(sc||1);var au=$('auto').checked;
+  var fs=au?base*1.3:base;el.style.fontSize=fs+'px';
+  if(au){while(over(el)&&fs>10){fs-=1;el.style.fontSize=fs+'px'}}}
+function unb(s){return s.replace(/^\s*(?:[-–—•·▪●*+]+\s*|\d{1,2}[.)]\s+)/,'')}
 function render(){
+  if(!$('poster').offsetWidth)return;
   ids.forEach(function(k){$('p_'+k).textContent=$(k).value.normalize('NFC')});
   BLK.forEach(function(b){var e=$(b[2]);e.style.marginLeft=cfg[b[0]].x+'px';e.style.marginTop=cfg[b[0]].y+'px'});
   var ol=$('p_nd');ol.innerHTML='';
-  var L=$('nd').value.split('\n').filter(function(x){return x.trim()});
+  var L=$('nd').value.split('\n').map(unb).filter(function(x){return x.trim()});
   L.forEach(function(x){var li=document.createElement('li');var sp=document.createElement('span');sp.textContent=x.trim().normalize('NFC');li.appendChild(sp);ol.appendChild(li)});
-  var fs=(L.length<=5?42:L.length<=7?34:28)*SC('nd');
-  ol.querySelectorAll('li').forEach(function(li){li.style.fontSize=fs+'px';var sp=li.firstChild,max=li.clientWidth-62-26;
-    var f=fs;if($('auto').checked){while(sp.scrollWidth>max&&f>10){f-=1;li.style.fontSize=f+'px'}}});
+  var fs=48*SC('nd');
+  var lis=[].slice.call(ol.querySelectorAll('li')),best=1e9,au=$('auto').checked;
+  lis.forEach(function(li){var sp=li.firstChild,c=Math.max(18,Math.min(62,Math.floor(li.clientHeight-6)));li.style.setProperty('--c',c+'px');var max=li.clientWidth-c-26,f=au?fs*1.15:fs;
+    if(au)f=Math.min(f,li.clientHeight*0.7);li.style.fontSize=f+'px';
+    if(au){while(sp.scrollWidth>max&&f>10){f-=1;li.style.fontSize=f+'px'}}
+    best=Math.min(best,f)});
+  lis.forEach(function(li){li.style.fontSize=best+'px'});
   [['p_dang','dang'],['p_chibo','chibo'],['p_sub','sub'],['p_dd','dd'],['p_call','call'],['p_tt','tt'],['p_time','time']].forEach(function(p){fitEl($(p[0]),SC(p[1]))});
 }
 function fit(){
-  var s=$('scale'),w=s.clientWidth,k=Math.min(1,w/1024);
+  var s=$('scale'),w=s.clientWidth;if(w<50)return;var k=Math.min(1,w/1024);
   $('poster').style.transform='scale('+k+')';s.style.height=(1536*k)+'px';
 }
 // Từ điển lỗi thường gặp (không dấu / sai dấu -> đúng)
@@ -139,7 +167,7 @@ function fixText(t,cap){
   var o=t;t=t.normalize('NFC');
   t=t.replace(/[ \t]+/g,' ').trim();
   t=t.replace(/\s+([,.;:!?])/g,'$1').replace(/([,;:!?])(?=[^\s\d])/g,'$1 ').replace(/\.(?=[A-ZÀ-Ỹa-zà-ỹ])/g,'. ');
-  t=t.replace(/([,.;:!?])\1+/g,'$1').replace(/\s*-\s*/g,' - ');
+  t=t.replace(/([,.;:!?])\1+/g,'$1').replace(/\s+-\s+/g,' - ');
   DICT.forEach(function(p){t=t.replace(new RegExp(esc(p[0]),'gi'),function(m){
     var r=p[1];return m[0]!==m[0].toLowerCase()?r[0].toUpperCase()+r.slice(1):r;})});
   ACR.forEach(function(a){t=t.replace(a[0],a[1])});
@@ -150,21 +178,53 @@ function fixText(t,cap){
 $('fix').onclick=function(){
   var n=0;
   ['dang','chibo','sub','dd','call'].forEach(function(k){var v=fixText($(k).value,true);if(v!==$(k).value)n++;$(k).value=v});
-  var lines=$('nd').value.split('\n').map(function(l){return fixText(l,true)}).filter(Boolean);
+  var lines=$('nd').value.split('\n').map(function(l){return fixText(unb(l),true)}).filter(Boolean);
   var nv=lines.join('\n');if(nv!==$('nd').value)n++;$('nd').value=nv;
   var d=$('ngay').value.trim().replace(/[.\-\s]+/g,'/');$('ngay').value=d;
   var g=$('gio').value.trim().replace(/h/i,':').replace(/\.|\s/g,':');if(/^\d{1,2}:?$/.test(g))g=g.replace(':','')+':00';$('gio').value=g;
   render();
   $('msg').textContent=n?('Đã chỉnh '+n+' mục. Bạn đọc lại lần nữa nhé, vì công cụ chỉ sửa được các lỗi phổ biến.'):'Không thấy lỗi phổ biến nào. Các từ gạch đỏ do trình duyệt gợi ý vẫn nên xem lại.';
 };
+var lastBlob=null;
+function showImg(u){
+  var o=$('ovl');
+  if(!o){o=document.createElement('div');o.id='ovl';o.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:99;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:12px;overflow:auto';
+    var inapp=/Zalo|FBAN|FBAV|Messenger|Instagram|Line\//i.test(navigator.userAgent);
+    o.innerHTML='<div style="color:#fff;font:bold 15px sans-serif;text-align:center">Ảnh đã sẵn sàng</div><img id="ovi" style="max-width:88vw;max-height:60vh;border-radius:6px"><div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;width:100%;max-width:420px"><a id="ova" download="thong-bao.png" style="flex:1 1 100%;text-align:center;background:#b30000;color:#fff;padding:14px 16px;border-radius:10px;font:bold 17px sans-serif;text-decoration:none">⬇ Lưu ảnh về máy</a><button id="ovs" type="button" style="flex:1 1 60%;background:#2f7d32;font-size:15px">📤 Chia sẻ / Lưu vào Ảnh</button><button id="ovc" type="button" style="flex:1 1 30%;background:#777;font-size:15px">Đóng</button></div><div style="color:#ccc;font:12px sans-serif;text-align:center;max-width:420px">'+(inapp?'Bạn đang mở trong ứng dụng (Zalo/Facebook...) nên có thể bị chặn tải. Hãy bấm ⋮ rồi chọn "Mở bằng trình duyệt" (Chrome/Safari). Hoặc bấm giữ vào ảnh để lưu.':'Nếu chưa thấy ảnh trong máy, bấm "Lưu ảnh về máy" hoặc bấm giữ vào ảnh.')+'</div>';
+    document.body.appendChild(o);
+    $('ovc').onclick=function(){o.style.display='none'};
+    $('ovs').onclick=function(){
+      var f=lastBlob&&new File([lastBlob],'thong-bao.png',{type:'image/png'});
+      if(f&&navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f],title:'Thông báo'}).catch(function(){});
+      else alert('Máy này chưa hỗ trợ chia sẻ ảnh, hãy bấm "Lưu ảnh về máy" hoặc bấm giữ vào ảnh.');
+    };
+    if(!(navigator.canShare&&navigator.share))$('ovs').style.display='none';
+  }
+  $('ovi').src=u;$('ova').href=u;o.style.display='flex';
+}
 $('png').onclick=function(){
-  var p=$('poster'),old=p.style.transform;p.style.transform='none';
-  html2canvas(p,{scale:1,backgroundColor:null}).then(function(c){
-    p.style.transform=old;
-    var a=document.createElement('a');a.download='thong-bao-hop-chi-bo.png';a.href=c.toDataURL('image/png');a.click();
-    $('msg').textContent='Nếu nút tải không chạy trong trang xem này, bấm chuột phải vào ảnh hoặc dùng nút In rồi lưu PDF.';
-  }).catch(function(){p.style.transform=old;$('msg').textContent='Không tạo được ảnh, hãy dùng nút In rồi lưu PDF.'});
+  var p=$('poster'),old=p.style.transform;
+  $('msg').textContent='Đang tạo ảnh...';
+  function go(){
+    p.style.transform='none';
+    html2canvas(p,{scale:1,backgroundColor:null,useCORS:true,width:1024,height:1536}).then(function(c){
+      p.style.transform=old;
+      c.toBlob(function(bl){
+        lastBlob=bl;var u=URL.createObjectURL(bl);
+        var a=document.createElement('a');a.download='thong-bao.png';a.href=u;document.body.appendChild(a);a.click();a.remove();
+        showImg(u);
+        $('msg').textContent='Đã tạo ảnh. Bấm "Lưu ảnh về máy" nếu máy chưa tự tải.';
+      },'image/png');
+    }).catch(function(e){p.style.transform=old;$('msg').textContent='Không tạo được ảnh ('+((e&&e.message)||'lỗi')+'). Hãy dùng nút In rồi lưu PDF.'});
+  }
+  if(window.html2canvas)go();else{var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';s.onload=go;s.onerror=function(){$('msg').textContent='Không tải được thư viện tạo ảnh. Kiểm tra mạng hoặc dùng nút In.'};document.head.appendChild(s)}
 };
+function tab(t){document.body.classList.toggle('tab-prev',t==='pv');
+  $('tIn').classList.toggle('on',t!=='pv');$('tPv').classList.toggle('on',t==='pv');
+  if(t==='pv'){fit();render();window.scrollTo(0,0)}}
+$('tIn').onclick=function(){tab('in')};
+$('tPv').onclick=function(){tab('pv')};
+$('tDl').onclick=function(){tab('pv');setTimeout(function(){$('png').click()},300)};
 $('prn').onclick=function(){window.print()};
 document.querySelectorAll('input,textarea').forEach(function(e){e.addEventListener('input',render)});
 window.addEventListener('resize',fit);
